@@ -1,14 +1,15 @@
 {
   "name": "express-template",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=26.0.0 <27"
+  },
+  "packageManager": "pnpm@12.18.0",
   "scripts": {
+    "start": "node website/config/server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -16,7 +17,6 @@
       "onFail": "download"
     }
   },
-  "packageManager": "pnpm@12.18.0",
   "type": "module",
   "dependencies": {
     "express": "^5.3.0"
