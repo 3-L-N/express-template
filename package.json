@@ -8,7 +8,8 @@
   "packageManager": "pnpm@12.18.0",
   "scripts": {
     "start": "node website/config/server.mjs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon website/config/server.mjs",
+    "test": "node --test"
   },
   "devEngines": {
     "packageManager": {
@@ -20,5 +21,9 @@
   "type": "module",
   "dependencies": {
     "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.2"
   }
 }
