@@ -7,9 +7,9 @@
   },
   "packageManager": "pnpm@12.18.0",
   "scripts": {
-    "start": "node website/config/server.mjs",
-    "dev": "nodemon website/config/server.mjs",
-    "test": "node --test"
+    "start": "node --env-file=.env website/config/server.mjs",
+    "dev": "nodemon --env-file=.env website/config/server.mjs",
+    "test": "node --test --experimental-test-coverage"
   },
   "devEngines": {
     "packageManager": {
