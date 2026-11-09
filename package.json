@@ -1,14 +1,16 @@
 {
   "name": "express-template",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=26.0.0 <27"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "packageManager": "pnpm@12.18.0",
+  "scripts": {
+    "start": "node --env-file=.env website/config/server.mjs",
+    "dev": "nodemon --env-file=.env website/config/server.mjs",
+    "test": "node --test --experimental-test-coverage"
+  },
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -16,9 +18,12 @@
       "onFail": "download"
     }
   },
-  "packageManager": "pnpm@12.18.0",
   "type": "module",
   "dependencies": {
     "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "supertest": "^7.3.2"
   }
 }
