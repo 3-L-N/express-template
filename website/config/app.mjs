@@ -3,10 +3,10 @@
  */
 
 import express from "express";
-import * as bootstrap from "./setup.mjs";
+import { setup } from "./setup.mjs";
 
 export const app = express();
-bootstrap.setup(app);
+setup(app);
 
 // TODO: add middleware
 
