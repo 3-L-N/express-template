@@ -1,4 +1,8 @@
 /**
+ * Manage a HTTP server, including starting and stopping it
+ */
+
+/**
  * Tries to start the server and announce it
  * @param {import("express").Express} app The Express application to serve
  * @param {string} host The host to listen on

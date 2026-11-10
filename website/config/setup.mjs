@@ -3,7 +3,7 @@
  */
 
 /**
- * Gets the configuration for the server
+ * @returns {{host: string, port: number}} The host and port to listen on
  */
 export function getConfig() {
   return {
