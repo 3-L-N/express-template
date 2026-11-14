@@ -34,30 +34,20 @@ export async function createServer(app, host, port) {
 }
 
 /**
- * Close a server instance and propagate any shutdown error.
- * @param {import("node:http").Server} server The running server to close
- * @returns {Promise<void>} Resolves when server is closed; rejects if closing fails.
- */
-export function closeServer(server) {
-  return new Promise((resolve, reject) => {
-    server.close((error) => {
-      if (error) {
-        reject(error);
-        return;
-      }
-
-      resolve();
-    });
-  });
-}
-
-/**
- * Properly close the server if it is still open.
+ * Properly close the server if it is still open and propagate any shutdown error.
  * @param {import("node:http").Server | null | undefined} server The server to close
  * @returns {Promise<void>} Resolves when server is closed; rejects if closing fails.
  */
 export async function shutdown(server) {
   if (server?.listening) {
-      await closeServer(server);
+    return new Promise((resolve, reject) => {
+      server.close((error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        resolve();
+      });
+    });
   }
 }
