@@ -8,6 +8,7 @@
   "packageManager": "pnpm@12.18.0",
   "scripts": {
     "start": "cd website && node --env-file=../.env index.mjs",
+    "build": "echo \"No build step required for now\"",
     "dev": "cd website && nodemon --env-file=../.env index.mjs",
     "test": "cd website && node --test --experimental-test-coverage"
   },

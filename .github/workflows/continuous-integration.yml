@@ -1,0 +1,27 @@
+name: Continuous integration
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use pnpm
+      uses: pnpm/action-setup@v6
+
+    - name: Use Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 26
+        cache: pnpm
+
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm run build --if-present
+    - run: pnpm test
+
