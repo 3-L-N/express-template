@@ -15,7 +15,7 @@ This repository is a minimal Express.js website template.
 
 - Only use ESM, not commonJS
 - Comment complex functions with JSDOC
-- Constants must be in UPPER_SNAKE_CASE
+- Primitive module-level constants must be in UPPER_SNAKE_CASE
 - Prettier code formatting is automatically applied
 
 ## Testing

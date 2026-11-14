@@ -3,7 +3,7 @@
  */
 
 import { app } from "./config/app.mjs";
-import * as server from /*{ createServer, shutdown, getConfig } from */ "./config/server.mjs";
+import * as server from "./config/server.mjs";
 
 const { host, port } = server.getConfig();
 const runningServer = await server.createServer(app, host, port);
