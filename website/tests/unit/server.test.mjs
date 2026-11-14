@@ -18,7 +18,6 @@ describe("Get Configuration", () => {
   });
 });
 
-
 describe("Server creation", () => {
   const host = "127.0.0.2";
   const port = 50000;

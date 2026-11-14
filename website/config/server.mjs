@@ -29,7 +29,7 @@ export async function createServer(app, host, port) {
     console.error("Unable to start server:", error);
     process.exitCode = 1;
   });
-  
+
   return server;
 }
 

@@ -4,6 +4,6 @@ import { setup } from "../../config/global-middleware.mjs";
 
 describe("setup", () => {
   it("can be run", () => {
-    assert.ok( setup() == 1);
+    assert.ok(setup() == 1);
   });
 });
