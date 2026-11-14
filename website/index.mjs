@@ -1,20 +1,16 @@
 /**
- * Main entry point. Starts and stops the server.
+ * @file Entry point for the website.
  */
 
 import { app } from "./config/app.mjs";
-import { createServer, shutdown } from "./config/server.mjs";
-import { getConfig } from "./config/setup.mjs";
+import * as server from /*{ createServer, shutdown, getConfig } from */"./config/server.mjs";
 
-const { host, port } = getConfig();
-const server = await createServer(app, host, port);
+const { host, port } = server.getConfig();
+const runningServer = await server.createServer(app, host, port);
 
 // Shut down properly on termination, ie Ctrl+C
 for (const signal of ["SIGINT", "SIGTERM"]) {
   process.once(signal, () => {
-    shutdown(server).catch((error) => {
-      console.error("Unable to shut down cleanly:", error);
-      process.exitCode = 1;
-    });
+    server.shutdown(runningServer)
   });
 }

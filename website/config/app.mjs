@@ -1,9 +1,9 @@
 /**
- * Register application specific middleware, routes, etc
+ * @file Register application specific middleware, routes, etc
  */
 
 import express from "express";
-import { setup } from "./setup.mjs";
+import { setup } from "./global-middleware.mjs";
 
 export const app = express();
 setup(app);
