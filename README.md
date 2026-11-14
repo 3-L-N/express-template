@@ -2,7 +2,6 @@
 
 A basic Express website that can be easily added to when making a new project
 
-
 ## Set up development environment
 
 You can use the `.devcontainer` in VSCode to automatically install dependencies and prepare .env, or you could do it manually:
