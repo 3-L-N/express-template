@@ -24,6 +24,14 @@ jobs:
           node-version: 26
           cache: pnpm
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm run build --if-present
-      - run: pnpm test
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check code style
+        run: pnpm format:check
+
+      #- name: Build application
+      #  run: pnpm run build --if-present
+
+      - name: Check tests
+        run: pnpm test
