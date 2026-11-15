@@ -9,7 +9,7 @@
     "start": "cd website && node --env-file=.env config/index.mjs",
     "build": "echo \"No build step required for now\"",
     "dev": "cd website && nodemon --env-file=.env config/index.mjs",
-    "test": "cd website && node --test --experimental-test-coverage",
+    "test": "cd website && node --test --experimental-test-coverage --test-coverage-include-all",
     "lint": "eslint .",
     "prepare": "husky"
   },

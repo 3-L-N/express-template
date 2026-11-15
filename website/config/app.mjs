@@ -4,17 +4,14 @@
 
 import express from "express";
 import { setup } from "./global-middleware.mjs";
+import { routes } from "./../routes.mjs";
 
 export const app = express();
+
 setup(app);
 
-// TODO: add middleware
+app.use("/", routes);
 
-// TODO: add routes
+// Define middleware specific to this app here
 
-// TODO: add error handling
-
-// just for testing for now
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
+// TODO: define error handling here
