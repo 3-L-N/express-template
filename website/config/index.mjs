@@ -2,8 +2,8 @@
  * @file Entry point for the website. This is not tested as it is not worth it
  */
 
-import { app } from "./config/app.mjs";
-import { createServer, shutdownServer } from "./config/server.mjs";
+import { app } from "./app.mjs";
+import { createServer, shutdownServer } from "./server.mjs";
 
 const server = await createServer(app);
 
