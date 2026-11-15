@@ -3,6 +3,7 @@ import globals from "globals";
 import markdown from "@eslint/markdown";
 import css from "@eslint/css";
 import cspellRecommended from "@cspell/eslint-plugin/recommended";
+import prettierRecommended from "eslint-plugin-prettier/recommended";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
@@ -25,13 +26,14 @@ export default defineConfig([
     language: "css/css",
     extends: ["css/recommended"],
   },
-  cspellRecommended,
   {
+    ...cspellRecommended,
     rules: {
       "@cspell/spellchecker": [
-        "warn",
+        "error",
         { customWordListFile: "./project-words.txt" },
       ],
     },
   },
+  prettierRecommended,
 ]);
