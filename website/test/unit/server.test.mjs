@@ -1,29 +1,20 @@
 import assert from "node:assert";
-import { EventEmitter, once } from "node:events"; // Only run code once the server is actually listening
+import { EventEmitter } from "node:events";
 import { afterEach, describe, it } from "node:test";
-import { createServer, shutdown, getConfig } from "../../config/server.mjs";
+import { createServer, shutdownServer } from "../../config/server.mjs";
 import express from "express";
 
 const app = express();
 
-describe("Get Configuration", () => {
-  it("uses default values if no input is used", () => {
-    assert.deepStrictEqual(getConfig(), { host: "127.0.0.1", port: 3000 });
-  });
-
-  it("uses supplied values", () => {
-    process.env.HOST = "0.0.0.3";
-    process.env.PORT = "1234";
-    assert.deepStrictEqual(getConfig(), { host: "0.0.0.3", port: 1234 });
-  });
-});
-
 describe("Server creation", () => {
   const host = "127.0.0.2";
   const port = 50000;
+  let previousEnv = { ...process.env };
+
   // Delete the server after each test without calling "shutdown"
   let server;
   afterEach(async () => {
+    process.env = { ...previousEnv };
     if (server?.listening) {
       await new Promise((resolve, reject) => {
         server.close((error) => (error ? reject(error) : resolve()));
@@ -31,19 +22,36 @@ describe("Server creation", () => {
     }
   });
 
-  it("uses specified host and port", async (t) => {
+  it("uses default host and port when environment values are unset", async (t) => {
     t.mock.method(console, "log", () => {});
-    server = await createServer(app, host, port);
-    await once(server, "listening");
+    server = await createServer(app);
+    assert.equal(server.address().port, 3000);
+    assert.equal(server.address().address, "127.0.0.1");
+  });
+
+  it("uses the host and port from the environment", async (t) => {
+    process.env.HOST = host;
+    process.env.PORT = port;
+    t.mock.method(console, "log", () => {});
+    server = await createServer(app);
+    assert.equal(server.listening, true);
     assert.equal(server.address().address, host);
     assert.equal(server.address().port, port);
+  });
+
+  it("rejects if the server fails to listen", async (t) => {
+    t.mock.method(console, "log", () => {});
+    server = await createServer(app);
+    await assert.rejects(createServer(app), {
+      code: "EADDRINUSE",
+    });
   });
 
   it("handles errors", async (t) => {
     t.mock.method(console, "log", () => {});
     const errorLog = t.mock.method(console, "error", () => {});
-    server = await createServer(app, host, port);
-    await once(server, "listening");
+
+    server = await createServer(app);
     const exitCode = process.exitCode;
     const error = new Error("Fake test error");
     try {
@@ -62,15 +70,14 @@ describe("Server creation", () => {
 describe("Server shutdown", () => {
   it("works on a running server", async (t) => {
     t.mock.method(console, "log", () => {});
-    const server = await createServer(app, "127.0.0.1", 0);
-    await once(server, "listening");
-    await shutdown(server);
+    const server = await createServer(app);
+    await shutdownServer(server);
     assert.equal(server.listening, false);
   });
 
   it("ignores a missing server", async () => {
-    await shutdown(new EventEmitter());
-    await shutdown(undefined);
+    await shutdownServer(new EventEmitter());
+    await shutdownServer(undefined);
   });
 
   it("rejects when closing fails", async () => {
@@ -78,6 +85,6 @@ describe("Server shutdown", () => {
       listening: true,
       close: (callback) => callback(new Error("close failed")),
     };
-    await assert.rejects(shutdown(server), /close failed/);
+    await assert.rejects(shutdownServer(server), /close failed/);
   });
 });

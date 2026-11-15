@@ -5,28 +5,27 @@
   "engines": {
     "node": ">=26.0.0 <27"
   },
-  "packageManager": "npm@11.20.0",
   "scripts": {
-    "start": "cd website && node --env-file=.env index.mjs",
+    "start": "cd website && node --env-file=.env config/index.mjs",
     "build": "echo \"No build step required for now\"",
-    "dev": "cd website && nodemon --env-file=.env index.mjs",
+    "dev": "cd website && nodemon --env-file=.env config/index.mjs",
     "test": "cd website && node --test --experimental-test-coverage",
-    "format": "prettier --write .",
-    "check:format": "prettier --check .",
-    "check:lint": "eslint .",
-    "check": "npm run check:format && npm run check:lint"
+    "lint": "eslint ."
   },
   "type": "module",
   "dependencies": {
     "express": "^5.3.0"
   },
   "devDependencies": {
+    "@cspell/eslint-plugin": "^10.5.1",
     "@eslint/css": "^2.0.1",
     "@eslint/js": "^10.0.1",
-    "@eslint/markdown": "^8.0.3",
+    "@eslint/markdown": "^7.5.1",
     "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.7",
     "globals": "^17.14.0",
-    "nodemon": "^3.1.14",
+    "nodemon": "^3.1.11",
     "prettier": "^3.10.1",
     "supertest": "^7.3.2"
   }

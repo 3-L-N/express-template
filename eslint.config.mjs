@@ -2,6 +2,8 @@ import js from "@eslint/js";
 import globals from "globals";
 import markdown from "@eslint/markdown";
 import css from "@eslint/css";
+import cspellRecommended from "@cspell/eslint-plugin/recommended";
+import prettierRecommended from "eslint-plugin-prettier/recommended";
 import { defineConfig } from "eslint/config";
 
 export default defineConfig([
@@ -14,6 +16,7 @@ export default defineConfig([
   {
     files: ["**/*.md"],
     plugins: { markdown },
+    // cspell:disable-next-line
     language: "markdown/commonmark",
     extends: ["markdown/recommended"],
   },
@@ -23,4 +26,14 @@ export default defineConfig([
     language: "css/css",
     extends: ["css/recommended"],
   },
+  {
+    ...cspellRecommended,
+    rules: {
+      "@cspell/spellchecker": [
+        "error",
+        { customWordListFile: "./project-words.txt" },
+      ],
+    },
+  },
+  prettierRecommended,
 ]);
