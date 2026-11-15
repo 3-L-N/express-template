@@ -25,6 +25,9 @@ jobs:
       - name: Check code style
         run: npm run format:check
 
+      - name: Check code quality
+        run: npm run lint
+
       #- name: Build application
       #  run: npm run build --if-present
 
