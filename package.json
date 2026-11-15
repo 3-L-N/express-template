@@ -10,7 +10,8 @@
     "build": "echo \"No build step required for now\"",
     "dev": "cd website && nodemon --env-file=.env config/index.mjs",
     "test": "cd website && node --test --experimental-test-coverage",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky"
   },
   "type": "module",
   "dependencies": {
@@ -25,8 +26,14 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.7",
     "globals": "^17.14.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "nodemon": "^3.1.11",
     "prettier": "^3.10.1",
     "supertest": "^7.3.2"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs}": "eslint --fix",
+    "*.{json,md,css}": "prettier --write"
   }
 }

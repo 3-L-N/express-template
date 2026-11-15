@@ -16,7 +16,7 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install && if [ ! -f website/.env ]; then cp .env.example website/.env; fi"
+  "postCreateCommand": "npm ci --include=dev && if [ ! -f website/.env ]; then cp .env.example website/.env; fi"
 
   // Configure tool-specific properties.
   // "customizations": {},
