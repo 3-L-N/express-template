@@ -20,7 +20,7 @@ export function getConfig() {
  *  @returns {Promise<import("node:http").Server>} The HTTP server instance.
  */
 export async function createServer(app, host, port) {
-  const server = app.listen(port, host, (error) => {
+  const server = app.listen(port, host, () => {
     const address = server.address();
     console.log(`Example app listening at http://${host}:${address.port}`);
   });
