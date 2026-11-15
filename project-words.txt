@@ -1,0 +1,3 @@
+# Project dictionary for cspell.
+# Add unusual words here so they will not be flagged as misspelt
+
