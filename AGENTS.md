@@ -22,5 +22,5 @@ This repository is a minimal Express.js website template.
 
 - Node test runner is used with the `describe/it` syntax
 - Integration tests should use Supertest
-- Validate changes with `pnpm test`
+- Validate changes with `npm test`
 - After writing code make tests for it to achieve 100% test coverage

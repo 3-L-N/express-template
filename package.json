@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=26.0.0 <27"
   },
-  "packageManager": "pnpm@12.18.0",
+  "packageManager": "npm@11.20.0",
   "scripts": {
     "start": "cd website && node --env-file=../.env index.mjs",
     "build": "echo \"No build step required for now\"",
@@ -13,13 +13,6 @@
     "test": "cd website && node --test --experimental-test-coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
-  },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "12.18.0",
-      "onFail": "download"
-    }
   },
   "type": "module",
   "dependencies": {
