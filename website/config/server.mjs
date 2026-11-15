@@ -1,16 +1,7 @@
 /**
  * @file Manage a HTTP server, including starting and stopping it
  */
-
-/**
- * @returns {{host: string, port: number}} The host and port to listen on
- */
-export function getConfig() {
-  return {
-    host: process.env.HOST || "127.0.0.1",
-    port: Number(process.env.PORT ?? 3000),
-  };
-}
+import { once } from "node:events";
 
 /**
  * Tries to start the server and announce it
@@ -19,13 +10,15 @@ export function getConfig() {
  * @param {number} port The port to listen on
  *  @returns {Promise<import("node:http").Server>} The HTTP server instance.
  */
-export async function createServer(app, host, port) {
-  const server = app.listen(port, host, () => {
-    const address = server.address();
-    console.log(`Example app listening at http://${host}:${address.port}`);
-  });
+async function createServerAt(app, host, port) {
+  const server = app.listen(port, host);
+  await once(server, "listening");
 
-  server.on("error", async (error) => {
+  console.log(
+    `Example app listening at http://${host}:${server.address().port}`,
+  );
+
+  server.on("error", (error) => {
     console.error("Unable to start server:", error);
     process.exitCode = 1;
   });
@@ -34,11 +27,22 @@ export async function createServer(app, host, port) {
 }
 
 /**
+ * Create a server using the values from getConfig()
+ * @param {import("express").Express} app The Express application to serve
+ * @returns {Promise<import("node:http").Server>} The HTTP server instance.
+ */
+export async function createServer(app) {
+  const host = process.env.HOST || "127.0.0.1";
+  const port = Number(process.env.PORT ?? 3000);
+  return createServerAt(app, host, port);
+}
+
+/**
  * Properly close the server if it is still open and propagate any shutdown error.
  * @param {import("node:http").Server | null | undefined} server The server to close
  * @returns {Promise<void>} Resolves when server is closed; rejects if closing fails.
  */
-export async function shutdown(server) {
+export async function shutdownServer(server) {
   if (server?.listening) {
     return new Promise((resolve, reject) => {
       server.close((error) => {

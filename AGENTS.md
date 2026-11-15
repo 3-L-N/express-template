@@ -7,15 +7,15 @@ This repository is a minimal Express.js website template.
 ## Project structure
 
 - `website/` All code is in here
-- `website/index.mjs` Entry point
+- `website/config/index.mjs` Entry point
 - `website/config/` Server configuration files
-- `website/config/` Unit and integration tests
+- `website/test/` Unit and integration tests
 
 ## Code Style
 
 - Only use ESM, not commonJS
 - Comment complex functions with JSDOC
-- Prettier code formatting is automatically applied
+- Prettier code formatting is automatically applied. You do not need to do this.
 
 ## Testing
 
