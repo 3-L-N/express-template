@@ -31,25 +31,37 @@ describe("Server creation", () => {
     }
   });
 
-  it("uses specified host and port", async () => {
+  it("uses specified host and port", async (t) => {
+    t.mock.method(console, "log", () => {});
     server = await createServer(app, host, port);
     await once(server, "listening");
     assert.equal(server.address().address, host);
     assert.equal(server.address().port, port);
   });
 
-  it("handles errors", async () => {
+  it("handles errors", async (t) => {
+    t.mock.method(console, "log", () => {});
+    const errorLog = t.mock.method(console, "error", () => {});
     server = await createServer(app, host, port);
     await once(server, "listening");
     const exitCode = process.exitCode;
-    server.emit("error", new Error("Fake test error"));
-    assert.equal(process.exitCode, 1);
-    process.exitCode = exitCode;
+    const error = new Error("Fake test error");
+    try {
+      server.emit("error", error);
+      assert.equal(process.exitCode, 1);
+      assert.deepStrictEqual(errorLog.mock.calls[0].arguments, [
+        "Unable to start server:",
+        error,
+      ]);
+    } finally {
+      process.exitCode = exitCode;
+    }
   });
 });
 
 describe("Server shutdown", () => {
-  it("works on a running server", async () => {
+  it("works on a running server", async (t) => {
+    t.mock.method(console, "log", () => {});
     const server = await createServer(app, "127.0.0.1", 0);
     await once(server, "listening");
     await shutdown(server);
