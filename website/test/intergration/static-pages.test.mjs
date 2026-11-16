@@ -4,6 +4,8 @@ import { describe, it, beforeEach } from "node:test";
 import { app } from "../../config/app.mjs";
 import { silenceOutput } from "../helpers.mjs";
 
+const baseUrl = new URL(process.env.BASE_URL ?? "http://127.0.0.1:8000");
+
 describe("static pages", () => {
   beforeEach((t) => {
     silenceOutput(t);
@@ -16,22 +18,18 @@ describe("static pages", () => {
     }
   });
 
-  it("redirects to canonical URL format", async () => {
+  it("redirects to canonical URL", async () => {
     for (const [requestedPath, expectedLocation] of [
       ["/ABOUT.HTML", "/about"],
       ["/INDEX.HTML", "/"],
       ["/index", "/"],
     ]) {
       const response = await request(app).get(requestedPath).redirects(0);
-      assert.strictEqual(
-        response.status,
-        301,
-        `${requestedPath} should redirect to canonical format`,
-      );
+      assert.strictEqual(response.status, 301, `${requestedPath} redirects`);
       assert.strictEqual(
         response.headers.location,
-        expectedLocation,
-        `${requestedPath} should redirect to ${expectedLocation}`,
+        `${baseUrl}${expectedLocation}`,
+        `${requestedPath} redirects to the correct canonical URL`,
       );
     }
   });

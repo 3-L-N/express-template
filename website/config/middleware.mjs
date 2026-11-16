@@ -2,6 +2,8 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "node:url";
 
+const baseUrl = new URL(process.env.BASE_URL ?? "http://127.0.0.1:8000");
+
 /**
  * Redirects requests to lowercase URLs without an `.html` suffix or `/index`.
  * @param {import("express").Request} req - The incoming request.
@@ -17,7 +19,7 @@ export function redirectToFormattedURL(req, res, next) {
     newPath = "/";
   }
   if (newPath !== req.path) {
-    return res.redirect(301, newPath);
+    return res.redirect(301, baseUrl + newPath);
   }
   next();
 }
