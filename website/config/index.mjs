@@ -1,5 +1,5 @@
 /**
- * @file Entry point for the website. This is not tested as it is not worth it
+ * @file Entry point for the website.
  */
 
 import { app } from "./app.mjs";

@@ -1,8 +1,8 @@
 import assert from "node:assert";
-import { describe, it, beforeEach } from "node:test";
 import request from "supertest";
-import { silenceOutput } from "../helpers.mjs";
 import { app } from "../../config/app.mjs";
+import { describe, it, beforeEach } from "node:test";
+import { silenceOutput } from "../helpers.mjs";
 
 describe("app", () => {
   beforeEach((t) => {
