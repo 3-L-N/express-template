@@ -9,7 +9,7 @@ describe("app", () => {
     silenceOutput(t);
   });
   it("returns the dynamic page", async () => {
-    const response = await request(app).get("/");
+    const response = await request(app).get("/time");
     assert.strictEqual(response.status, 200);
     assert.match(
       response.text,

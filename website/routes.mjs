@@ -6,4 +6,4 @@ import { testController } from "./controllers/dynamic-page.mjs";
 export const routes = express.Router();
 
 // Define all routes
-routes.get("/", testController);
+routes.get("/time", testController);
