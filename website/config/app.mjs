@@ -9,6 +9,7 @@ import { routes } from "./../routes.mjs";
 export const app = express();
 
 // Serving files
+app.set("view engine", "ejs");
 app.use("/", routes);
 app.use(redirectToFormattedURL);
 app.use(staticFiles);

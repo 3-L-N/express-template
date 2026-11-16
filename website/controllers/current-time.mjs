@@ -1,4 +1,4 @@
-export function testController(req, res) {
+export function currentTimeController(req, res) {
   // show the current time
   const currentTime = new Date().toLocaleString();
   res.send(

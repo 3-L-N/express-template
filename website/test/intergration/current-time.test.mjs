@@ -8,7 +8,7 @@ describe("app", () => {
   beforeEach((t) => {
     silenceOutput(t);
   });
-  it("returns the dynamic page", async () => {
+  it("returns the current time", async () => {
     const response = await request(app).get("/time");
     assert.strictEqual(response.status, 200);
     assert.match(
