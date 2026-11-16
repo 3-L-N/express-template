@@ -3,18 +3,14 @@
  */
 
 import express from "express";
-import { setup } from "./global-middleware.mjs";
+import { redirectToFormattedURL, staticFiles } from "./middleware.mjs";
+import { routes } from "./../routes.mjs";
 
 export const app = express();
-setup(app);
 
-// TODO: add middleware
+// Serving files
+app.use("/", routes);
+app.use(redirectToFormattedURL);
+app.use(staticFiles);
 
-// TODO: add routes
-
-// TODO: add error handling
-
-// just for testing for now
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
+// TODO: define error handling here
