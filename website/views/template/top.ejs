@@ -1,8 +1,7 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <%- include("../component/head") %>
+  <%- include('../component/head', { title: title }) %>
   <body>
-    <%- include("../component/nav") %>
+    <%- include('../component/nav') %>
     <main>
-  </body>
-</html>
+      <h1><%= title %></h1>
