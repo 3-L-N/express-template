@@ -7,5 +7,5 @@
  * @param {object} t - The test context object provided by the test runner.
  */
 export function silenceOutput(t) {
-  t.mock.method(console, "log", () => {});
+  t.mock.method(console, "log", function discardLog() {});
 }

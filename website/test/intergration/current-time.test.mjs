@@ -5,15 +5,18 @@ import { describe, it, beforeEach } from "node:test";
 import { silenceOutput } from "../helpers.mjs";
 
 describe("app", () => {
-  beforeEach((t) => {
+  beforeEach(function silenceTestOutput(t) {
     silenceOutput(t);
   });
-  it("returns the current time", async () => {
+  it("renders the current time as an HTML page", async () => {
     const response = await request(app).get("/time");
     assert.strictEqual(response.status, 200);
+    assert.strictEqual(response.type, "text/html");
+    assert.match(response.text, /<title>Current Time<\/title>/);
+    assert.match(response.text, /<h1>Current Time<\/h1>/);
     assert.match(
       response.text,
-      /^This is a dynamic page and the current server time is: .+$/,
+      /The current server time is: <time>[^<]+<\/time>/,
     );
   });
 });

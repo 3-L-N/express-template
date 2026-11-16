@@ -8,8 +8,14 @@ import { routes } from "./../routes.mjs";
 
 export const app = express();
 
-// Serving files
+// Override the default res.render
 app.set("view engine", "ejs");
+const oldRender = app.response.render;
+app.response.render = function renderDynamic(viewName, ...args) {
+  return oldRender.call(this, `dynamic/${viewName}`, ...args);
+};
+
+// Serving files
 app.use("/", routes);
 app.use(redirectToFormattedURL);
 app.use(staticFiles);

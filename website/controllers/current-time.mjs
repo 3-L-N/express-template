@@ -1,7 +1,7 @@
 export function currentTimeController(req, res) {
-  // show the current time
   const currentTime = new Date().toLocaleString();
-  res.send(
-    `This is a dynamic page and the current server time is: ${currentTime}`,
-  );
+  res.render("current-time", {
+    title: "Current Time",
+    currentTime,
+  });
 }

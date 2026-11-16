@@ -7,9 +7,11 @@ import { createServer, shutdownServer } from "./server.mjs";
 
 const server = await createServer(app);
 
+function handleTermination() {
+  shutdownServer(server);
+}
+
 // Shut down properly on termination, ie Ctrl+C
 for (const signal of ["SIGINT", "SIGTERM"]) {
-  process.once(signal, () => {
-    shutdownServer(server);
-  });
+  process.once(signal, handleTermination);
 }

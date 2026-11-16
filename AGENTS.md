@@ -17,6 +17,7 @@ This folder contains the website:
 ## Code Style
 
 - Only use ESM, not commonJS
+- Dont use anomonous functions. Only use them for `describe/it` sections in tests
 - Comment complex functions with JSDOC
 - Linting is automaticlly applied before each commit. You dont need to worry about this.
 

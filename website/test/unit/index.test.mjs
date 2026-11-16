@@ -4,6 +4,7 @@ import { describe, it } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { app } from "../../config/app.mjs";
+import { silenceOutput } from "../helpers.mjs";
 
 describe("entry point", () => {
   it("runs the app when launched as the program entrypoint", async (t) => {
@@ -11,24 +12,32 @@ describe("entry point", () => {
     const originalListen = app.listen;
     const registered = {};
     const fakeServer = new EventEmitter();
-    fakeServer.address = () => ({ address: "127.0.0.1", port: 4321 });
-    fakeServer.close = (callback) => {
+    fakeServer.address = function getFakeServerAddress() {
+      return { address: "127.0.0.1", port: 4321 };
+    };
+    fakeServer.close = function closeFakeServer(callback) {
       if (callback) {
         callback(null);
       }
       return fakeServer;
     };
 
-    app.listen = () => {
-      process.nextTick(() => fakeServer.emit("listening"));
+    app.listen = function listen() {
+      process.nextTick(function emitListening() {
+        fakeServer.emit("listening");
+      });
       return fakeServer;
     };
 
-    t.mock.method(console, "log", () => {});
-    t.mock.method(process, "once", (signal, callback) => {
-      registered[signal] = callback;
-      return process;
-    });
+    silenceOutput(t);
+    t.mock.method(
+      process,
+      "once",
+      function captureSignalHandler(signal, callback) {
+        registered[signal] = callback;
+        return process;
+      },
+    );
 
     const modulePath = fileURLToPath(
       new URL("../../config/index.mjs", import.meta.url),

@@ -13,17 +13,23 @@ describe("Server creation", () => {
 
   // Delete the server after each test without calling "shutdown"
   let server;
-  afterEach(async () => {
+  afterEach(async function restoreServerState() {
     process.env = { ...previousEnv };
     if (server?.listening) {
-      await new Promise((resolve, reject) => {
-        server.close((error) => (error ? reject(error) : resolve()));
+      await new Promise(function closeTestServer(resolve, reject) {
+        server.close(function handleTestServerClose(error) {
+          if (error) {
+            reject(error);
+            return;
+          }
+          resolve();
+        });
       });
     }
   });
 
-  it("uses default host and port when environment values are unset", async (t) => {
-    t.mock.method(console, "log", () => {});
+  it("uses default host and port when environment values are unset", async function usesDefaultHostAndPort(t) {
+    t.mock.method(console, "log", function discardLog() {});
     server = await createServer(app);
     assert.equal(server.address().port, 3000);
     assert.equal(server.address().address, "127.0.0.1");
@@ -32,7 +38,7 @@ describe("Server creation", () => {
   it("uses the host and port from the environment", async (t) => {
     process.env.HOST = host;
     process.env.PORT = port;
-    t.mock.method(console, "log", () => {});
+    t.mock.method(console, "log", function discardLog() {});
     server = await createServer(app);
     assert.equal(server.listening, true);
     assert.equal(server.address().address, host);
@@ -40,7 +46,7 @@ describe("Server creation", () => {
   });
 
   it("rejects if the server fails to listen", async (t) => {
-    t.mock.method(console, "log", () => {});
+    t.mock.method(console, "log", function discardLog() {});
     server = await createServer(app);
     await assert.rejects(createServer(app), {
       code: "EADDRINUSE",
@@ -48,8 +54,12 @@ describe("Server creation", () => {
   });
 
   it("handles errors", async (t) => {
-    t.mock.method(console, "log", () => {});
-    const errorLog = t.mock.method(console, "error", () => {});
+    t.mock.method(console, "log", function discardLog() {});
+    const errorLog = t.mock.method(
+      console,
+      "error",
+      function discardError() {},
+    );
 
     server = await createServer(app);
     const exitCode = process.exitCode;
@@ -69,7 +79,7 @@ describe("Server creation", () => {
 
 describe("Server shutdown", () => {
   it("works on a running server", async (t) => {
-    t.mock.method(console, "log", () => {});
+    t.mock.method(console, "log", function discardLog() {});
     const server = await createServer(app);
     await shutdownServer(server);
     assert.equal(server.listening, false);
@@ -83,7 +93,9 @@ describe("Server shutdown", () => {
   it("rejects when closing fails", async () => {
     const server = {
       listening: true,
-      close: (callback) => callback(new Error("close failed")),
+      close: function closeWithError(callback) {
+        callback(new Error("close failed"));
+      },
     };
     await assert.rejects(shutdownServer(server), /close failed/);
   });
