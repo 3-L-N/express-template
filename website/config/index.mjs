@@ -3,7 +3,10 @@
  */
 
 import { app } from "./app.mjs";
+import { build } from "./build.mjs";
 import { createServer, shutdownServer } from "./server.mjs";
+
+await build();
 
 const server = await createServer(app);
 

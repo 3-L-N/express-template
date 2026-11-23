@@ -28,7 +28,7 @@ describe("static pages", () => {
       assert.strictEqual(response.status, 301, `${requestedPath} redirects`);
       assert.strictEqual(
         response.headers.location,
-        `${baseUrl}${expectedLocation}`,
+        new URL(expectedLocation, baseUrl).toString(),
         `${requestedPath} redirects to the correct canonical URL`,
       );
     }

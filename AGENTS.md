@@ -5,15 +5,23 @@
 This repository is a minimal Express.js website template.
 how
 
-## `website/` structure
+## File structure
 
-This folder contains the website:
+### `website/` - The website source code:
 
 - `config/` Server configuration files
 - `config/index.mjs` Entry point
 - `test/` Unit and integration tests
 - `routes.mjs` and `controllers/` Serves dynamic content
-- `public/` serves static content
+
+### `website/views` - Front end
+
+Has front end resources including .ejs files which are rendered before being shown.
+
+- `/public-src` and `/private-src` contain static files which rendered and put in `/public` and `/private`
+- `/public` has static files that are allways served. For example the URL "/about" will serve "/about.ejs"
+- `/private` has static files that can be sent by using controllers
+- `/dynamic` has dynamic .mjs files that are used by controllers
 
 ## Code Style
 

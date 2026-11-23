@@ -1,14 +1,25 @@
 import assert from "node:assert";
 import { EventEmitter } from "node:events";
-import { describe, it } from "node:test";
+import { describe, it, mock } from "node:test";
 import { fileURLToPath } from "node:url";
 
-import { app } from "../../config/app.mjs";
 import { silenceOutput } from "../helpers.mjs";
 
 describe("entry point", () => {
   it("runs the app when launched as the program entrypoint", async (t) => {
     const originalArgv1 = process.argv[1];
+    const build = t.mock.fn(async function mockBuild() {});
+
+    mock.module("../../config/build.mjs", {
+      exports: {
+        build,
+        engine: function mockEngine(filePath, options, callback) {
+          callback(null, "mocked template");
+        },
+      },
+    });
+
+    const { app } = await import("../../config/app.mjs");
     const originalListen = app.listen;
     const registered = {};
     const fakeServer = new EventEmitter();
@@ -47,6 +58,7 @@ describe("entry point", () => {
     try {
       await import("../../config/index.mjs");
 
+      assert.equal(build.mock.callCount(), 1);
       assert.deepStrictEqual(Object.keys(registered).sort(), [
         "SIGINT",
         "SIGTERM",
