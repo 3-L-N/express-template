@@ -19,7 +19,7 @@ export function redirectToFormattedURL(req, res, next) {
     newPath = "/";
   }
   if (newPath !== req.path) {
-    return res.redirect(301, new URL(newPath, baseUrl));
+    return res.redirect(301, new URL(newPath, baseUrl).toString());
   }
   next();
 }
