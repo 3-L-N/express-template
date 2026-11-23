@@ -1,5 +1,9 @@
 # Dependencies
-node_modules/
+/node_modules/
 
 # Secrets
 .env
+
+# Built webpages
+/website/views/public/
+/website/views/private/

@@ -19,7 +19,7 @@ export function redirectToFormattedURL(req, res, next) {
     newPath = "/";
   }
   if (newPath !== req.path) {
-    return res.redirect(301, baseUrl + newPath);
+    return res.redirect(301, new URL(newPath, baseUrl).toString());
   }
   next();
 }
@@ -31,6 +31,6 @@ export function redirectToFormattedURL(req, res, next) {
  * @param {import("express").NextFunction} next - The next middleware callback.
  */
 export const staticFiles = express.static(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), "../public"),
+  path.join(path.dirname(fileURLToPath(import.meta.url)), "../views/public"),
   { index: "index.html", extensions: ["html"] },
 );

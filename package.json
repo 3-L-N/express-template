@@ -7,15 +7,18 @@
   },
   "scripts": {
     "start": "cd website && node --env-file=.env config/index.mjs",
-    "build": "echo \"No build step required for now\"",
+    "build": "cd website && node --input-type=module --eval \"import { build } from './config/build.mjs'; await build();\"",
     "dev": "cd website && nodemon --env-file=.env config/index.mjs",
-    "test": "cd website && node --test --experimental-test-coverage --test-coverage-include-all  test/unit/* test/intergration/*",
+    "pretest": "npm run build",
+    "test": "cd website && node --test --experimental-test-module-mocks --experimental-test-coverage --test-coverage-include-all test/unit/* test/intergration/*",
     "lint": "eslint .",
     "prepare": "husky"
   },
   "type": "module",
   "dependencies": {
-    "express": "^5.3.0"
+    "ejs": "^7.0.2",
+    "express": "^5.3.0",
+    "html-minifier-terser": "^7.2.0"
   },
   "devDependencies": {
     "@cspell/eslint-plugin": "^10.5.1",

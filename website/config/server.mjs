@@ -18,7 +18,7 @@ async function createServerAt(app, host, port) {
     `Example app listening at http://${host}:${server.address().port}`,
   );
 
-  server.on("error", (error) => {
+  server.on("error", function handleServerError(error) {
     console.error("Unable to start server:", error);
     process.exitCode = 1;
   });
@@ -44,8 +44,8 @@ export async function createServer(app) {
  */
 export async function shutdownServer(server) {
   if (server?.listening) {
-    return new Promise((resolve, reject) => {
-      server.close((error) => {
+    return new Promise(function closeServer(resolve, reject) {
+      server.close(function handleClose(error) {
         if (error) {
           reject(error);
           return;

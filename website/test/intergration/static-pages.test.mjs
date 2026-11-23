@@ -7,7 +7,7 @@ import { silenceOutput } from "../helpers.mjs";
 const baseUrl = new URL(process.env.BASE_URL ?? "http://127.0.0.1:8000");
 
 describe("static pages", () => {
-  beforeEach((t) => {
+  beforeEach(function silenceTestOutput(t) {
     silenceOutput(t);
   });
 
@@ -28,7 +28,7 @@ describe("static pages", () => {
       assert.strictEqual(response.status, 301, `${requestedPath} redirects`);
       assert.strictEqual(
         response.headers.location,
-        `${baseUrl}${expectedLocation}`,
+        new URL(expectedLocation, baseUrl).toString(),
         `${requestedPath} redirects to the correct canonical URL`,
       );
     }
