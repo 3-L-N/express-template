@@ -1,6 +1,6 @@
 export function currentTimeController(req, res) {
   const currentTime = new Date().toLocaleString();
-  res.render("current-time", {
+  res.render("dynamic/current-time", {
     currentTime,
   });
 }

@@ -47,11 +47,11 @@ app.engine(
     callback(null, minifiedHtml);
   },
 );
-
+/*
 const oldRender = app.response.render;
 app.response.render = function renderDynamic(viewName, ...args) {
   return oldRender.call(this, `dynamic/${viewName}`, ...args);
-};
+};*/
 
 // Serving files
 app.use("/", routes);
