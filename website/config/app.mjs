@@ -22,5 +22,4 @@ app.engine("ejs", engine);
 app.use("/", routes);
 app.use(mw.redirectToFormattedURL);
 app.use(mw.staticFiles);
-
-// TODO: define error handling here
+app.use(mw.notFound);

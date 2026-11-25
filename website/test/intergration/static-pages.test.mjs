@@ -18,6 +18,18 @@ describe("static pages", () => {
     }
   });
 
+  it("returns the custom 404 page", async () => {
+    for (const requestedPath of ["/404", "/missing-page"]) {
+      const response = await request(app).get(requestedPath);
+      assert.strictEqual(
+        response.status,
+        404,
+        `${requestedPath} should give a HTTP 404`,
+      );
+      assert.match(response.text, /Page not found/);
+    }
+  });
+
   it("redirects to canonical URL", async () => {
     for (const [requestedPath, expectedLocation] of [
       ["/ABOUT.HTML", "/about"],

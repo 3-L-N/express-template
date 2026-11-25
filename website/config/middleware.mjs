@@ -29,16 +29,33 @@ export function redirectToFormattedURL(req, res, next) {
   next();
 }
 
-/**
- * Serve matching files in `public/`
- * @param {import("express").Request} req - The incoming request.
- * @param {import("express").Response} res - The response used to redirect.
- * @param {import("express").NextFunction} next - The next middleware callback.
- */
-export const staticFiles = express.static(publicViewsPath, {
+const servePublicFiles = express.static(publicViewsPath, {
   index: "index.html",
   extensions: ["html"],
 });
+
+/**
+ * Serve all static public files, apart from the 404 page
+ * @param {import("express").Request} req - The incoming request.
+ * @param {import("express").Response} res - The response used to serve the file.
+ * @param {import("express").NextFunction} next - The next middleware callback.
+ */
+export function staticFiles(req, res, next) {
+  if (req.path === "/404") {
+    return next();
+  }
+  servePublicFiles(req, res, next);
+}
+
+/**
+ * Respond to unmatched requests with the public 404 page.
+ * @param {import("express").Request} req - The incoming request.
+ * @param {import("express").Response} res - The response used for the 404.
+ * @returns {import("express").Response} The sent 404 response.
+ */
+export function notFound(req, res) {
+  return res.status(404).sendFile("404.html", { root: publicViewsPath });
+}
 
 /**
  * Send a file from the private views directory.
