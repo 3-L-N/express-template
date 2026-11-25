@@ -9,12 +9,9 @@ import { routes } from "./../routes.mjs";
 
 export const app = express();
 
-// Add functions to the app for operations used often in the controllers
-// so you don't have to import them into each one
+// Add functions and view engines to the app so they can be used anywhere
 app.response.sendPrivateFile = mw.sendPrivateFile;
 app.response.sendDynamicFile = mw.sendDynamicFile;
-
-// View engine(s)
 app.set("view engine", "ejs");
 app.engine("ejs", engine);
 
@@ -22,4 +19,6 @@ app.engine("ejs", engine);
 app.use("/", routes);
 app.use(mw.redirectToFormattedURL);
 app.use(mw.staticFiles);
-app.use(mw.notFound);
+
+// Error handling
+app.use(mw.notFound, mw.errorHandler);
