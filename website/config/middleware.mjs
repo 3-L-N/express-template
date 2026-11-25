@@ -1,6 +1,11 @@
 import express from "express";
-import path from "path";
-import { fileURLToPath } from "node:url";
+import path from "node:path";
+
+import {
+  dynamicViewsPath,
+  privateViewsPath,
+  publicViewsPath,
+} from "../constants.mjs";
 
 const baseUrl = new URL(process.env.BASE_URL ?? "http://127.0.0.1:8000");
 
@@ -30,7 +35,28 @@ export function redirectToFormattedURL(req, res, next) {
  * @param {import("express").Response} res - The response used to redirect.
  * @param {import("express").NextFunction} next - The next middleware callback.
  */
-export const staticFiles = express.static(
-  path.join(path.dirname(fileURLToPath(import.meta.url)), "../views/public"),
-  { index: "index.html", extensions: ["html"] },
-);
+export const staticFiles = express.static(publicViewsPath, {
+  index: "index.html",
+  extensions: ["html"],
+});
+
+/**
+ * Send a file from the private views directory.
+ * @this {import("express").Response}
+ * @param {string} fileName - The name of the file to send.
+ * @returns {import("express").Response} The Express response.
+ */
+export function sendPrivateFile(fileName) {
+  return this.sendFile(fileName, { root: privateViewsPath });
+}
+
+/**
+ * Render a dynamic view with local template variables.
+ * @this {import("express").Response}
+ * @param {string} fileName - The name of the dynamic view.
+ * @param {object} locals - Variables passed to the view engine.
+ * @returns {import("express").Response} The Express response.
+ */
+export function sendDynamicFile(fileName, locals) {
+  return this.render(path.join(dynamicViewsPath, fileName), locals);
+}

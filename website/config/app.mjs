@@ -3,33 +3,24 @@
  */
 
 import express from "express";
-import { fileURLToPath } from "node:url";
-import { redirectToFormattedURL, staticFiles } from "./middleware.mjs";
+import * as mw from "./middleware.mjs";
 import { engine } from "./build.mjs";
 import { routes } from "./../routes.mjs";
 
 export const app = express();
 
-// Send a private file
-const privateViewsPath = fileURLToPath(
-  new URL("../views/private/", import.meta.url),
-);
+// Add functions to the app for operations used often in the controllers
+// so you don't have to import them into each one
+app.response.sendPrivateFile = mw.sendPrivateFile;
+app.response.sendDynamicFile = mw.sendDynamicFile;
 
-app.response.sendPrivateFile = function sendPrivateFile(fileName) {
-  return this.sendFile(fileName, { root: privateViewsPath });
-};
-
-// Render a dynamic file
-app.response.sendDynamicFile = function sendDynamicFile(fileName, locals) {
-  return this.render(`dynamic/${fileName}`, locals);
-};
-
+// View engine(s)
 app.set("view engine", "ejs");
 app.engine("ejs", engine);
 
 // Serving files
 app.use("/", routes);
-app.use(redirectToFormattedURL);
-app.use(staticFiles);
+app.use(mw.redirectToFormattedURL);
+app.use(mw.staticFiles);
 
 // TODO: define error handling here

@@ -104,7 +104,12 @@ describe("Static file build", () => {
     process.chdir(temporaryDirectory);
     t.mock.method(console, "log", function discardLog() {});
 
-    await build();
+    await build(
+      join(temporaryDirectory, "views/public"),
+      join(temporaryDirectory, "views/private"),
+      join(temporaryDirectory, "views/public-src"),
+      join(temporaryDirectory, "views/private-src"),
+    );
 
     assert.equal(
       await readFile("views/public/nested/script.js", "utf8"),
@@ -147,15 +152,23 @@ describe("Static file build", () => {
 
     process.chdir(temporaryDirectory);
 
-    await assert.rejects(build(), (error) => {
-      assert.match(
-        error.message,
-        /Could not build .*broken\.ejs.*into .*broken\.html/,
-      );
-      assert.ok(error.cause);
-      assert.match(error.cause.message, /Failed to render .*broken\.ejs/);
-      assert.ok(error.cause.cause);
-      return true;
-    });
+    await assert.rejects(
+      build(
+        join(temporaryDirectory, "views/public"),
+        join(temporaryDirectory, "views/private"),
+        join(temporaryDirectory, "views/public-src"),
+        join(temporaryDirectory, "views/private-src"),
+      ),
+      (error) => {
+        assert.match(
+          error.message,
+          /Could not build .*broken\.ejs.*into .*broken\.html/,
+        );
+        assert.ok(error.cause);
+        assert.match(error.cause.message, /Failed to render .*broken\.ejs/);
+        assert.ok(error.cause.cause);
+        return true;
+      },
+    );
   });
 });

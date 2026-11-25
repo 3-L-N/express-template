@@ -9,7 +9,6 @@
     "start": "cd website && node --env-file=.env config/index.mjs",
     "build": "cd website && node --input-type=module --eval \"import { build } from './config/build.mjs'; await build();\"",
     "dev": "cd website && nodemon --env-file=.env config/index.mjs",
-    "pretest": "npm run build",
     "test": "cd website && node --test --experimental-test-module-mocks --experimental-test-coverage --test-coverage-include-all test/unit/* test/intergration/*",
     "lint": "eslint .",
     "prepare": "husky"
