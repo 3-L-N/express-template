@@ -4,7 +4,7 @@ import { describe, it, beforeEach } from "node:test";
 import { app } from "../../config/app.mjs";
 import { silenceOutput } from "../helpers.mjs";
 
-const baseUrl = new URL(process.env.BASE_URL ?? "http://127.0.0.1:8000");
+const baseUrl = new URL("http://localhost");
 
 describe("static pages", () => {
   beforeEach(function silenceTestOutput(t) {

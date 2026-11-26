@@ -7,7 +7,7 @@ import {
   publicViewsPath,
 } from "../constants.mjs";
 
-const baseUrl = new URL(process.env.BASE_URL ?? "http://127.0.0.1:8000");
+const baseUrl = new URL("http://" + (process.env.DOMAIN ?? "localhost"));
 
 /**
  * Redirects requests to lowercase URLs without an `.html` suffix or `/index`.
@@ -32,6 +32,7 @@ export function redirectToFormattedURL(req, res, next) {
 const servePublicFiles = express.static(publicViewsPath, {
   index: "index.html",
   extensions: ["html"],
+  dotfiles: "ignore",
 });
 
 /**
