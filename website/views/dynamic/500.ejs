@@ -1,0 +1,10 @@
+<%- include("../template/top", { title: ' Internal error' }) %>
+
+<% if (locals.error) { %>
+  <pre><%= error.stack %></pre>
+<% } else { %>
+  <p>There was an issue while trying to preform this action.</p>
+  <p><a href="/">Go back to main page</a></p>
+<% } %>
+
+<%- include("../template/bottom") %>

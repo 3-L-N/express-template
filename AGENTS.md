@@ -3,7 +3,6 @@
 ## Project overview
 
 This repository is a minimal Express.js website template.
-how
 
 ## File structure
 
@@ -18,9 +17,9 @@ how
 
 Has front end resources including .ejs files which are rendered before being shown.
 
-- `/public-src` and `/private-src` contain static files which rendered and put in `/public` and `/private`
+- `/public` and `/private` contain static files which rendered into `/dist`
 - `/public` has static files that are allways served. For example the URL "/about" will serve "/about.ejs"
-- `/private` has static files that can be sent by using controllers
+- `/private` has static files that are only served under some conditions as defined in controllers
 - `/dynamic` has dynamic .mjs files that are used by controllers
 
 ## Code Style
@@ -35,6 +34,6 @@ Has front end resources including .ejs files which are rendered before being sho
 
 - Node test runner is used with the `describe/it` syntax
 - Integration tests should use Supertest
-- Check that changes dont create new issues with `npm test`
+- Perform regression testing with `npm test`
 - Target test coverage is 100%
-- After making or editing code, once it is accepted by the user create tests for it
+- After making or editing code that is accepted by the user, create tests for it

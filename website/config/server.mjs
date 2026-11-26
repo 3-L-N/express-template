@@ -15,7 +15,8 @@ async function createServerAt(app, host, port) {
   await once(server, "listening");
 
   console.log(
-    `Example app listening at http://${host}:${server.address().port}`,
+    "Server listening at http://" +
+      (process.env.DOMAIN ?? `${host}:${server.address().port}`),
   );
 
   server.on("error", function handleServerError(error) {

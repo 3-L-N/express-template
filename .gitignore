@@ -5,5 +5,4 @@
 .env
 
 # Built webpages
-/website/views/public/
-/website/views/private/
+/dist/

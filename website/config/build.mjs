@@ -14,6 +14,12 @@ import {
 } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
 import { minify as minifyJavaScript } from "terser";
+import {
+  privateViewsSourcePath,
+  privateViewsPath,
+  publicViewsSourcePath,
+  publicViewsPath,
+} from "../constants.mjs";
 
 const HTML_MINIFY_OPTIONS = {
   collapseWhitespace: true,
@@ -54,19 +60,30 @@ export async function engine(filePath, options, callback) {
   callback(null, html);
 }
 
-/** Build all static files */
-export async function build() {
+/**
+ * Build all static files.
+ * @param {string} [publicViewPath] - Public output base path.
+ * @param {string} [privateViewPath] - Private output base path.
+ * @param {string} [publicBuildPath] - Public source base path.
+ * @param {string} [privateBuildPath] - Private source base path.
+ */
+export async function build(
+  publicViewPath = publicViewsPath,
+  privateViewPath = privateViewsPath,
+  publicBuildPath = publicViewsSourcePath,
+  privateBuildPath = privateViewsSourcePath,
+) {
   const startTime = process.hrtime.bigint();
 
   // Delete previous folders first as their contents may be too old
   await Promise.all([
-    rm("views/public", { force: true, recursive: true }),
-    rm("views/private", { force: true, recursive: true }),
+    rm(publicViewPath, { force: true, recursive: true }),
+    rm(privateViewPath, { force: true, recursive: true }),
   ]);
 
   await Promise.all([
-    buildFolder("views/public-src", "views/public"),
-    buildFolder("views/private-src", "views/private"),
+    buildFolder(publicBuildPath, publicViewPath),
+    buildFolder(privateBuildPath, privateViewPath),
   ]);
 
   const elapsedMilliseconds = Math.round(
